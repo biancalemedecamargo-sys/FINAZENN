@@ -1,6 +1,6 @@
-import { eq } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users } from "../drizzle/schema";
+import { InsertUser, users, transactions, investments, debts, goals, userParams, InsertTransaction, InsertInvestment, InsertDebt, InsertGoal, InsertUserParams } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -89,4 +89,123 @@ export async function getUserByOpenId(openId: string) {
   return result.length > 0 ? result[0] : undefined;
 }
 
-// TODO: add feature queries here as your schema grows.
+// Funcoes para Transacoes
+export async function getTransactionsByUserId(userId: number) {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select().from(transactions).where(eq(transactions.userId, userId)).orderBy(transactions.date);
+}
+
+export async function createTransaction(data: InsertTransaction) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const result = await db.insert(transactions).values(data);
+  return result;
+}
+
+export async function updateTransaction(id: number, data: Partial<InsertTransaction>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  return db.update(transactions).set(data).where(eq(transactions.id, id));
+}
+
+export async function deleteTransaction(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  return db.delete(transactions).where(eq(transactions.id, id));
+}
+
+// Funcoes para Investimentos
+export async function getInvestmentsByUserId(userId: number) {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select().from(investments).where(eq(investments.userId, userId));
+}
+
+export async function createInvestment(data: InsertInvestment) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  return db.insert(investments).values(data);
+}
+
+export async function updateInvestment(id: number, data: Partial<InsertInvestment>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  return db.update(investments).set(data).where(eq(investments.id, id));
+}
+
+export async function deleteInvestment(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  return db.delete(investments).where(eq(investments.id, id));
+}
+
+// Funcoes para Dividas
+export async function getDebtsByUserId(userId: number) {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select().from(debts).where(eq(debts.userId, userId));
+}
+
+export async function createDebt(data: InsertDebt) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  return db.insert(debts).values(data);
+}
+
+export async function updateDebt(id: number, data: Partial<InsertDebt>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  return db.update(debts).set(data).where(eq(debts.id, id));
+}
+
+export async function deleteDebt(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  return db.delete(debts).where(eq(debts.id, id));
+}
+
+// Funcoes para Metas
+export async function getGoalsByUserId(userId: number) {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select().from(goals).where(eq(goals.userId, userId));
+}
+
+export async function createGoal(data: InsertGoal) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  return db.insert(goals).values(data);
+}
+
+export async function updateGoal(id: number, data: Partial<InsertGoal>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  return db.update(goals).set(data).where(eq(goals.id, id));
+}
+
+export async function deleteGoal(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  return db.delete(goals).where(eq(goals.id, id));
+}
+
+// Funcoes para Parametros do Usuario
+export async function getUserParams(userId: number) {
+  const db = await getDb();
+  if (!db) return null;
+  const result = await db.select().from(userParams).where(eq(userParams.userId, userId)).limit(1);
+  return result.length > 0 ? result[0] : null;
+}
+
+export async function createOrUpdateUserParams(data: InsertUserParams) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const existing = await getUserParams(data.userId);
+  if (existing) {
+    return db.update(userParams).set(data).where(eq(userParams.userId, data.userId));
+  } else {
+    return db.insert(userParams).values(data);
+  }
+}
+

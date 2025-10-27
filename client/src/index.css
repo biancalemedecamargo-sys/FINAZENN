@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 @custom-variant dark (&:is(.dark *));
 
@@ -76,6 +77,11 @@
   --sidebar-accent-foreground: oklch(0.141 0.005 285.823);
   --sidebar-border: oklch(0.92 0.004 286.32);
   --sidebar-ring: oklch(0.623 0.214 259.815);
+  /* Gradientes Neuroeconômicos */
+  --primary-gradient: linear-gradient(135deg, #0084ff 0%, #0066cc 100%);
+  --success-gradient: linear-gradient(135deg, #00d084 0%, #00a366 100%);
+  --warning-gradient: linear-gradient(135deg, #ffb800 0%, #ff9500 100%);
+  --danger-gradient: linear-gradient(135deg, #ff3333 0%, #cc0000 100%);
 }
 
 .dark {
@@ -119,6 +125,14 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: 'Inter', sans-serif;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    @apply font-bold;
+  }
+  code, pre {
+    font-family: 'JetBrains Mono', monospace;
   }
   button:not(:disabled),
   [role="button"]:not([aria-disabled="true"]),
@@ -131,6 +145,25 @@
   input[type="radio"]:not(:disabled) {
     @apply cursor-pointer;
   }
+}
+
+/* Scrollbar personalizado */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--background));
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted));
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground));
 }
 
 @layer components {
@@ -168,5 +201,72 @@
       padding-right: 2rem;
       max-width: 1280px; /* Standard content width */
     }
+  }
+
+  /* Glassmorphism */
+  .glass {
+    background-color: hsl(var(--card) / 0.7);
+    backdrop-filter: blur(12px);
+    border: 1px solid hsl(var(--border) / 0.2);
+    border-radius: 0.5rem;
+  }
+
+  /* Metric Card */
+  .metric-card {
+    background-color: hsl(var(--card) / 0.7);
+    backdrop-filter: blur(12px);
+    border: 1px solid hsl(var(--border) / 0.2);
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    transition: background-color 0.2s ease;
+  }
+
+  .metric-card:hover {
+    background-color: hsl(var(--card) / 0.8);
+  }
+
+  /* Transaction Card */
+  .transaction-card {
+    background-color: hsl(var(--card) / 0.7);
+    backdrop-filter: blur(12px);
+    border: 1px solid hsl(var(--border) / 0.2);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    transition: all 0.2s ease;
+  }
+
+  .transaction-card:hover {
+    background-color: hsl(var(--card) / 0.8);
+  }
+
+  /* Animacoes */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideInLeft {
+    from {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.3s ease-out;
+  }
+
+  .animate-slide-in-left {
+    animation: slideInLeft 0.3s ease-out;
   }
 }
