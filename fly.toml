@@ -1,0 +1,94 @@
+# Configuração do Fly.io para FinanceZenn
+# Documentação: https://fly.io/docs/reference/configuration/
+
+app = "financezenn"
+primary_region = "gig"
+
+# Configuração de build
+[build]
+  dockerfile = "Dockerfile"
+  args = {}
+
+# Variáveis de ambiente
+[env]
+  NODE_ENV = "production"
+  PORT = "8080"
+
+# Configuração de serviço HTTP
+[[services]]
+  protocol = "tcp"
+  internal_port = 8080
+  
+  # Configuração de porta
+  [[services.ports]]
+    port = 80
+    handlers = ["http"]
+    force_https = true
+  
+  [[services.ports]]
+    port = 443
+    handlers = ["tls", "http"]
+  
+  # Health check
+  [services.http_checks]
+    enabled = true
+    interval = "30s"
+    timeout = "10s"
+    grace_period = "5s"
+    method = "GET"
+    path = "/health"
+    protocol = "http"
+    tls_skip_verify = false
+    headers = {}
+
+# Configuração de máquina
+[compute]
+  machines = [
+    {
+      cpu_kind = "shared",
+      cpus = 1,
+      memory_mb = 512,
+    }
+  ]
+
+# Configuração de auto-scaling (opcional)
+[[compute.machine_specs]]
+  cpu_kind = "shared"
+  cpus = 1
+  memory_mb = 512
+
+# Configuração de persistência (opcional)
+# [[mounts]]
+#   source = "data"
+#   destination = "/app/data"
+
+# Configuração de banco de dados (PostgreSQL)
+# Você pode usar Fly Postgres ou um banco externo
+# Para usar Fly Postgres, execute: flyctl postgres create
+
+# Configuração de segredos
+# Execute: flyctl secrets set OPENAI_API_KEY=sk-...
+# flyctl secrets set TWILIO_ACCOUNT_SID=AC...
+# flyctl secrets set TWILIO_AUTH_TOKEN=...
+# flyctl secrets set TWILIO_PHONE_NUMBER=+...
+# flyctl secrets set DATABASE_URL=postgresql://...
+# flyctl secrets set JWT_SECRET=seu-secret-aqui
+
+# Configuração de log
+[logging]
+  enabled = true
+
+# Configuração de observabilidade
+[observability]
+  enabled = true
+
+# Configuração de deploy
+[deploy]
+  release_command = "node server/dist/migrate.js"
+  strategy = "rolling"
+
+# Configuração de rate limiting (opcional)
+# [http_service.limits]
+#   rate_limit_threshold = 100
+#   rate_limit_period_seconds = 60
+

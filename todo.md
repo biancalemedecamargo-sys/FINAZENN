@@ -79,3 +79,42 @@
 - [ ] Preparar documentação para deploy no Fly.io
 - [ ] Entregar projeto ao usuário
 
+
+
+
+## Integrações Externas
+
+### GitHub
+- [ ] Criar repositório no GitHub
+- [ ] Configurar GitHub Actions para CI/CD
+- [ ] Integrar com Fly.io para deploy automático
+
+### OpenAI
+- [x] Obter chave API OpenAI
+- [x] Integrar análises com IA no endpoint /insights
+- [x] Criar recomendações personalizadas com GPT
+
+### Twilio
+- [x] Obter credenciais Twilio (Account SID, Auth Token)
+- [x] Configurar número de telefone Twilio
+- [x] Implementar notificações por SMS
+- [x] Implementar notificações por WhatsApp
+
+### Hotmart
+- [ ] Adicionar link de compra do eBook Finance IA
+- [ ] Criar página de upsell
+- [ ] Integrar rastreamento de vendas
+
+### GitHub
+- [ ] Criar repositório no GitHub
+- [x] Configurar GitHub Actions para CI/CD
+- [x] Integrar com Fly.io para deploy automático
+
+### Fly.io
+- [ ] Criar conta no Fly.io
+- [x] Configurar fly.toml
+- [x] Criar Dockerfile multi-stage
+- [ ] Deploy inicial da aplicação
+- [ ] Configurar variáveis de ambiente
+- [ ] Configurar banco de dados PostgreSQL
+
