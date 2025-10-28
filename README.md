@@ -1,1 +1,1 @@
-# MANUS-IA
+app = "finance-ia-25"
